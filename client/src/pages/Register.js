@@ -19,7 +19,7 @@ const Register = () => {
   const onSubmit = async e => {
     e.preventDefault();
 
-    const res = await fetch('/api/auth/register', {
+    const res = await fetch('https://cashtrack-app-2.onrender.com/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password }),
