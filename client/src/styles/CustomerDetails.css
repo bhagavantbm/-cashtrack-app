@@ -1,0 +1,343 @@
+/* CustomerDetails.css */
+
+.customer-details {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1.5rem 2rem;
+  background: #f9fafb; /* light gray */
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  transition: background-color 0.3s ease;
+}
+
+/* Header */
+.customer-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.customer-header h2 {
+  font-weight: 700;
+  font-size: 1.9rem;
+  color: #064663; /* dark teal */
+  margin-bottom: 0.3rem;
+}
+
+.customer-header p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.balance-box {
+  display: inline-block;
+  padding: 0.5rem 1.2rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: white;
+  user-select: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: background-color 0.4s ease;
+}
+
+.bg-green {
+  background-color: #2e7d32; /* medium green */
+}
+
+.bg-red {
+  background-color: #c62828; /* medium red */
+}
+
+.bg-gray-500 {
+  background-color: #616161; /* medium gray */
+}
+
+/* Form styling */
+.form-box {
+  background: white;
+  padding: 1.8rem 2rem;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+  margin-bottom: 2rem;
+  transition: box-shadow 0.3s ease;
+}
+
+.form-box h3 {
+  font-weight: 700;
+  color: #0d3b66;
+  margin-bottom: 1.2rem;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+.form-box label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #374151;
+  margin-top: 1rem;
+}
+
+/* Updated input/select styling with consistent widths */
+.form-box select,
+.form-box input[type="number"],
+.form-box input[type="text"] {
+  width: 100%;
+  max-width: 280px; /* max width to match longest select option approx */
+  padding: 0.55rem 0.75rem;
+  border: 1.8px solid #cbd5e1; /* soft gray border */
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  outline-offset: 2px;
+  box-sizing: border-box; /* include padding in width */
+}
+
+.form-box select:focus,
+.form-box input[type="number"]:focus,
+.form-box input[type="text"]:focus {
+  border-color: #2563eb; /* blue */
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.3);
+}
+
+.form-box button {
+  margin-top: 1.6rem;
+  width: 100%;
+  padding: 0.75rem 0;
+  background-color: #2563eb; /* blue */
+  border: none;
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.form-box button:hover:not(.disabled) {
+  background-color: #1e40af; /* darker blue */
+}
+
+.form-box button.disabled {
+  background-color: #94a3b8; /* gray */
+  cursor: not-allowed;
+}
+
+/* Align amount and description side by side */
+.form-row {
+  display: flex;
+  gap: 1.5rem; /* space between input/select */
+  margin-top: 1rem;
+  align-items: flex-start;
+  flex-wrap: nowrap; /* prevent wrapping on desktop */
+  max-width: 100%; /* prevent overflow */
+}
+
+.form-row .form-group {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* fix flexbox overflow issues */
+}
+
+/* Transactions List */
+.transaction-list {
+  margin-bottom: 2rem;
+}
+
+.transaction-list h3 {
+  font-weight: 700;
+  color: #0d3b66;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 1.4rem;
+}
+
+/* Transaction Card - flexbox to align amount & description horizontally */
+.transaction-card {
+  background: white;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+  transition: box-shadow 0.3s ease;
+  cursor: default;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.transaction-card:hover {
+  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+}
+
+.transaction-card.received {
+  border-left: 5px solid #2e7d32; /* green */
+}
+
+.transaction-card.paid {
+  border-left: 5px solid #c62828; /* red */
+}
+
+/* Amount styling */
+.transaction-card strong {
+  color: #0d3b66;
+  font-size: 1.1rem;
+  flex-shrink: 0; /* prevent shrinking */
+  white-space: nowrap;
+}
+
+/* Description styling */
+.transaction-card div {
+  font-size: 0.9rem;
+  color: #6b7280; /* gray-500 */
+  flex-grow: 1; /* take remaining space */
+  overflow-wrap: break-word;
+  word-break: break-word;
+  margin: 0; /* remove default margin */
+  font-style: italic;
+}
+
+/* WhatsApp and PDF buttons */
+.whatsapp-btn {
+  width: 100%;
+  padding: 0.85rem 0;
+  background-color: #25D366;
+  color: white;
+  border: none;
+  font-weight: 700;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  user-select: none;
+  box-shadow: 0 5px 10px rgba(37, 211, 102, 0.4);
+}
+
+.whatsapp-btn:hover {
+  background-color: #1ebe57;
+}
+
+.whatsapp-btn + .whatsapp-btn {
+  background-color: #4B5563; /* gray */
+  margin-top: 1rem;
+  box-shadow: 0 5px 10px rgba(75, 85, 99, 0.4);
+}
+
+.whatsapp-btn + .whatsapp-btn:hover {
+  background-color: #374151;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .customer-details {
+    margin: 1rem;
+    padding: 1rem 1.2rem;
+  }
+
+  .form-box,
+  .transaction-card {
+    padding: 1rem 1rem;
+  }
+
+  .customer-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .form-box h3,
+  .transaction-list h3 {
+    font-size: 1.2rem;
+  }
+
+  /* Keep amount and description side by side on mobile with wrapping */
+  .form-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .form-row .form-group {
+    flex: 1 1 48%;
+    min-width: 140px;
+  }
+
+  /* Override max-width on mobile to be full width inside container */
+  .form-box select,
+  .form-box input[type="number"],
+  .form-box input[type="text"] {
+    max-width: 100%;
+  }
+
+  /* Stack transaction card content vertically on very small screens */
+  .transaction-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .transaction-card strong {
+    margin-bottom: 0.3rem;
+  }
+}
+.form-box select,
+.form-box input[type="number"],
+.form-box input[type="text"] {
+  width: 100%;          /* Full width inside their flex container */
+  max-width: none;      /* Remove previous max-width limitation */
+  padding: 0.55rem 0.75rem;
+  border: 1.8px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  outline-offset: 2px;
+  box-sizing: border-box;
+}
+.form-row {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  max-width: 100%;
+}
+
+.form-row .form-group {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.form-row {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  max-width: 100%;
+}
+
+.form-row .form-group {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.form-box select,
+.form-box input[type="number"],
+.form-box input[type="text"] {
+  width: 100%;
+  max-width: none;
+  padding: 0.55rem 0.75rem;
+  border: 1.8px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  outline-offset: 2px;
+  box-sizing: border-box;
+}

@@ -1,0 +1,158 @@
+:root {
+  --bg-light: linear-gradient(to right, #f3f4f6, #e5e7eb);
+  --bg-dark: linear-gradient(to right, #1f2937, #111827);
+  --form-bg-light: #ffffff;
+  --form-bg-dark: #1f2937;
+  --text-light: #111827;
+  --text-dark: #f3f4f6;
+  --input-border-light: #d1d5db;
+  --input-border-dark: #4b5563;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: var(--bg-light);
+  color: var(--text-light);
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.login-form {
+  background-color: var(--form-bg-light);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  max-width: 400px;
+  width: 100%;
+  transition: transform 0.3s ease, background-color 0.4s ease;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.login-form:hover {
+  transform: scale(1.02);
+}
+
+.login-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 1rem;
+  border: 1px solid var(--input-border-light);
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: transparent;
+  color: inherit;
+  transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+  border-color: #16a34a;
+  outline: none;
+}
+
+.form-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #16a34a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-button:hover {
+  background-color: #15803d;
+}
+
+.register-link {
+  margin-top: 1rem;
+  font-size: 14px;
+  text-align: center;
+  color: #4b5563;
+}
+
+.register-link a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  color: #dc2626;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: var(--bg-dark);
+    color: var(--text-dark);
+  }
+
+  .login-form {
+    background-color: var(--form-bg-dark);
+  }
+
+  .form-input {
+    border: 1px solid var(--input-border-dark);
+  }
+
+  .register-link {
+    color: #d1d5db;
+  }
+
+  .register-link a {
+    color: #60a5fa;
+  }
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 500px) {
+  .login-form {
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .form-input,
+  .form-button {
+    font-size: 14px;
+  }
+
+  .login-title {
+    font-size: 20px;
+  }
+}
