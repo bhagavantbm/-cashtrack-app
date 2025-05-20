@@ -16,6 +16,10 @@ const mongoURI = process.env.MONGO_URI;
 app.use(cors());
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.send('Backend server is running');
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/customers', customerRoutes);
@@ -33,3 +37,4 @@ mongoose
   .catch((err) => {
     console.error('❌ MongoDB connection error:', err);
   });
+  
