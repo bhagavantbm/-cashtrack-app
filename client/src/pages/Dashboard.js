@@ -214,56 +214,58 @@ const handleAddCustomer = async (e) => {
         aria-label="Customer list"
       >
         {filteredCustomers.length === 0 && !loading && <p>No customers found.</p>}
-        {filteredCustomers.map((cust) => {
-          const { received = 0, paid = 0 } = cust;
-          const bal = received - paid;
-          const initials = cust.name
-            .split(' ')
-            .map((n) => n[0].toUpperCase())
-            .join('');
+ {filteredCustomers.map((cust) => {
+  const { received = 0, paid = 0 } = cust;
+  const bal = received - paid;
 
-          return (
-            <motion.div
-              key={cust._id}
-              className="customer-card"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => navigate(`/customer/${cust._id}`)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') navigate(`/customer/${cust._id}`);
-              }}
-              aria-label={`View details for ${cust.name}`}
-            >
-              <div className="avatar" aria-hidden="true">{initials}</div>
-              <div className="card-details">
-                <h2>{cust.name}</h2>
-                <p>📞 {cust.phone}</p>
-                <p>Received: ₹{received.toFixed(2)}</p>
-                <p>Paid: ₹{paid.toFixed(2)}</p>
-                <p className={bal > 0 ? 'receive' : bal < 0 ? 'pay' : 'settled'}>
-                  {bal > 0
-                    ? 'You will receive'
-                    : bal < 0
-                    ? 'You need to pay'
-                    : 'All Settled'}{' '}
-                  ₹{Math.abs(bal).toFixed(2)}
-                </p>
-              </div>
-              <button
-                className="delete-btn"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDelete(cust._id);
-                }}
-                aria-label={`Delete customer ${cust.name}`}
-              >
-                Delete
-              </button>
-            </motion.div>
-          );
-        })}
+  const initials = (cust.name || '')
+    .split(' ')
+    .map((n) => n[0]?.toUpperCase() || '')
+    .join('');
+
+  return (
+    <motion.div
+      key={cust._id}
+      className="customer-card"
+      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={() => navigate(`/customer/${cust._id}`)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') navigate(`/customer/${cust._id}`);
+      }}
+      aria-label={`View details for ${cust.name}`}
+    >
+      <div className="avatar" aria-hidden="true">{initials}</div>
+      <div className="card-details">
+        <h2>{cust.name || 'N/A'}</h2>
+        <p>📞 {cust.phone}</p>
+        <p>Received: ₹{received.toFixed(2)}</p>
+        <p>Paid: ₹{paid.toFixed(2)}</p>
+        <p className={bal > 0 ? 'receive' : bal < 0 ? 'pay' : 'settled'}>
+          {bal > 0
+            ? 'You will receive'
+            : bal < 0
+            ? 'You need to pay'
+            : 'All Settled'}{' '}
+          ₹{Math.abs(bal).toFixed(2)}
+        </p>
+      </div>
+      <button
+        className="delete-btn"
+        onClick={(e) => {
+          e.stopPropagation();
+          handleDelete(cust._id);
+        }}
+        aria-label={`Delete customer ${cust.name}`}
+      >
+        Delete
+      </button>
+    </motion.div>
+  );
+})}
+
       </section>
     </div>
   );
