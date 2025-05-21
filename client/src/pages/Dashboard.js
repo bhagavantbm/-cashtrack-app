@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaUserCircle } from 'react-icons/fa';
 import '../styles/Dashboard.css';
+import api from '../utils/axiosConfig'; // your axios instance with baseURL & auth interceptor
+
 
 const Dashboard = () => {
   const [customers, setCustomers] = useState([]);
@@ -66,21 +68,37 @@ const Dashboard = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [showDropdown]);
 
-  const handleAddCustomer = async (e) => {
-    e.preventDefault();
-    if (!form.name || !form.phone) return;
+const handleAddCustomer = async (e) => {
+  e.preventDefault();
+  if (!form.name || !form.phone) return;
 
-    setError('');
-    try {
-      await axios.post('/customers/add', form, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      });
-      setForm({ name: '', phone: '' });
-      fetchCustomers();
-    } catch (error) {
+  setError('');
+  try {
+    // Use the axios instance 'api' which already has baseURL and Authorization header set
+    await api.post('/customers', form);
+
+    setForm({ name: '', phone: '' });
+    fetchCustomers();
+  } catch (error) {
+    console.error('Add customer error:', error.response || error.message);
+
+    if (error.response) {
+      // Backend responded with error status code
+      setError(error.response.data.error || 'Failed to add customer');
+      if (error.response.status === 401) {
+        // Token expired or unauthorized, redirect to login
+        localStorage.clear();
+        navigate('/login');
+      }
+    } else if (error.request) {
+      // Request made but no response received
+      setError('No response from server. Please try again later.');
+    } else {
+      // Other errors
       setError('Failed to add customer');
     }
-  };
+  }
+};
 
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this customer?')) return;

@@ -10,9 +10,10 @@ const {
 } = require('../controllers/customerController');
 
 // Corrected Routes
-router.post('/', auth, addCustomer);             // Add customer
-router.get('/', auth, getCustomers);             // Get customers
-router.get('/summary', auth, getSummary);        // Get summary
-router.delete('/:customerId', auth, deleteCustomer); // Delete customer
+router.post('/', auth, addCustomer);   // POST /api/customers to add
+router.get('/', auth, getCustomers);
+router.get('/summary', auth, getSummary);
+router.delete('/:customerId', auth, deleteCustomer);
+ // Delete customer
 
 module.exports = router;
