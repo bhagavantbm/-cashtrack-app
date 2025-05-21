@@ -7,6 +7,7 @@ import 'jspdf-autotable'; // For table support (optional but recommended)
 import 'jspdf-autotable'; // For table support (optional but recommended)
 import autoTable from 'jspdf-autotable';
 import '../styles/CustomerDetails.css'
+import { PDFDocument } from 'pdf-lib';
 
 
 
@@ -41,6 +42,32 @@ const CustomerDetails = () => {
       setLoading(false);
     }
   }, [customerId]);
+  async function pdfToImage(pdfBlob) {
+  // Use pdfjs-dist to load PDF
+  const pdfjsLib = await import('pdfjs-dist/build/pdf');
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.179/pdf.worker.min.js';
+
+  const loadingTask = pdfjsLib.getDocument({ data: await pdfBlob.arrayBuffer() });
+  const pdf = await loadingTask.promise;
+
+  const page = await pdf.getPage(pdf.numPages); // get last page
+  const viewport = page.getViewport({ scale: 2 });
+
+  // Create canvas
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  canvas.height = viewport.height;
+  canvas.width = viewport.width;
+
+  // Render page
+  const renderContext = {
+    canvasContext: context,
+    viewport: viewport,
+  };
+  await page.render(renderContext).promise;
+
+  return canvas.toDataURL('image/png');
+}
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -60,7 +87,7 @@ const CustomerDetails = () => {
       await axios.post('/transactions/add', {
         customerId,
         type: form.type,
-        amount: Number(form.amount),
+        amount: parseFloat(Number(form.amount).toFixed(2)),
         description: form.description.trim() || '',
         paymentMethod: form.paymentMethod,
       });
@@ -73,6 +100,78 @@ const CustomerDetails = () => {
       setSubmitting(false);
     }
   };
+  const generateSummaryImage = () => {
+  if (!customer || transactions.length === 0) return null;
+
+  // Create a canvas element
+  const canvas = document.createElement('canvas');
+  const width = 600;
+  const lineHeight = 25;
+  const padding = 20;
+  const headerHeight = 60;
+  const rowCount = transactions.length + 2; // 1 header + transactions + balance row
+  const height = headerHeight + rowCount * lineHeight + padding * 2;
+  canvas.width = width;
+  canvas.height = height;
+
+  const ctx = canvas.getContext('2d');
+
+  // Background
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, width, height);
+
+  // Title
+  ctx.fillStyle = '#16a085'; // teal
+  ctx.font = 'bold 20px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText(`${customer.name}'s Transaction Summary`, width / 2, padding + 25);
+
+  ctx.font = '16px Arial';
+  ctx.fillStyle = '#000000';
+  ctx.textAlign = 'left';
+
+  // Header Row
+  const startY = padding + 50;
+  ctx.fillText('Date', 20, startY);
+  ctx.fillText('Type', 150, startY);
+  ctx.fillText('Amount (₹)', 300, startY);
+  ctx.fillText('Payment Method', 420, startY);
+  ctx.fillText('Description', 530, startY);
+
+  ctx.strokeStyle = '#16a085';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(15, startY + 5);
+  ctx.lineTo(width - 15, startY + 5);
+  ctx.stroke();
+
+  // Transactions rows
+  let y = startY + lineHeight;
+  transactions.forEach(tx => {
+    ctx.fillText(new Date(tx.date).toLocaleDateString(), 20, y);
+    ctx.fillText(tx.type === 'received' ? 'Received' : 'Paid', 150, y);
+    ctx.fillText(tx.amount.toFixed(2), 300, y);
+    ctx.fillText(tx.paymentMethod.charAt(0).toUpperCase() + tx.paymentMethod.slice(1), 420, y);
+    ctx.fillText(tx.description || '-', 530, y);
+    y += lineHeight;
+  });
+
+  // Balance row
+  const { totalReceived, totalPaid } = getTotals();
+  const balance = totalPaid - totalReceived;
+  ctx.font = 'bold 16px Arial';
+  ctx.fillStyle = balance > 0 ? 'green' : balance < 0 ? 'red' : 'gray';
+  const balanceText =
+    balance > 0
+      ? `You will receive ₹${balance.toFixed(2)}`
+      : balance < 0
+      ? `You need to pay ₹${Math.abs(balance).toFixed(2)}`
+      : 'All settled';
+  ctx.fillText(balanceText, 20, y + 2 * lineHeight);
+
+  return canvas.toDataURL('image/png');
+};
+
 
   // Calculate total amounts paid and received separately
   const getTotals = () => {
