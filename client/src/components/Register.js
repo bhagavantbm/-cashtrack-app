@@ -58,6 +58,7 @@ const Register = () => {
           required
         />
         <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded">Register</button>
+        
         <p className="mt-3 text-sm text-center">
           Already have an account? <Link to="/login" className="text-blue-600">Login</Link>
         </p>

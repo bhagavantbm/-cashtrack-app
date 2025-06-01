@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import '../styles/Login.css'; // ✅ Adjust if file is in another folder
+import '../styles/Login.css';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false); // <-- new loading state
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -14,6 +15,8 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);  // start loading
+    setError('');      // clear previous errors
     try {
       const res = await axios.post('https://cashtrack-app-2.onrender.com/api/auth/login', formData);
       localStorage.setItem('token', res.data.token);
@@ -22,6 +25,8 @@ const Login = () => {
       navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
+    } finally {
+      setLoading(false); // stop loading
     }
   };
 
@@ -38,6 +43,7 @@ const Login = () => {
           onChange={handleChange}
           className="form-input"
           required
+          disabled={loading}  // disable input while loading
         />
         <input
           type="password"
@@ -47,8 +53,11 @@ const Login = () => {
           onChange={handleChange}
           className="form-input"
           required
+          disabled={loading}  // disable input while loading
         />
-        <button type="submit" className="form-button">Login</button>
+        <button type="submit" className="form-button" disabled={loading}>
+          {loading ? 'Logging in...' : 'Login'}
+        </button>
         <p className="register-link">
           Don’t have an account? <Link to="/register">Register here</Link>
         </p>

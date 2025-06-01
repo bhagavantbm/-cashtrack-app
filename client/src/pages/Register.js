@@ -11,6 +11,8 @@ const Register = () => {
     password: '',
   });
 
+  const [loading, setLoading] = useState(false);
+
   const { name, email, password } = formData;
 
   const onChange = e =>
@@ -18,20 +20,27 @@ const Register = () => {
 
   const onSubmit = async e => {
     e.preventDefault();
+    setLoading(true);
 
-    const res = await fetch('https://cashtrack-app-2.onrender.com/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password }),
-    });
+    try {
+      const res = await fetch('https://cashtrack-app-2.onrender.com/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (data.success) {
-      alert('Registration successful! Please login.');
-      navigate('/login');
-    } else {
-      alert(data.message || 'Registration failed');
+      if (data.success) {
+        alert('Registration successful! Please login.');
+        navigate('/login');
+      } else {
+        alert(data.message || 'Registration failed');
+      }
+    } catch (err) {
+      alert('Network error. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -66,8 +75,8 @@ const Register = () => {
           onChange={onChange}
           required
         />
-        <button className="form-button" type="submit">
-          Register
+        <button className="form-button" type="submit" disabled={loading}>
+          {loading ? 'Registering...' : 'Register'}
         </button>
 
         <p className="register-link">
