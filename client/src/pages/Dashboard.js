@@ -194,10 +194,11 @@ const Dashboard = () => {
                 <p>📞 {phone}</p>
                 <p>Received: ₹{received.toFixed(2)}</p>
                 <p>Paid: ₹{paid.toFixed(2)}</p>
-                <p className={bal > 0 ? 'receive' : bal < 0 ? 'pay' : 'settled'}>
-                  {bal > 0 ? 'You will receive' : bal < 0 ? 'You need to pay' : 'All Settled'} ₹
-                  {Math.abs(bal).toFixed(2)}
-                </p>
+                <p className={bal < 0 ? 'receive' : bal > 0 ? 'pay' : 'settled'}>
+  {bal < 0 ? 'You will receive' : bal > 0 ? 'You need to pay' : 'All Settled'} ₹
+  {Math.abs(bal).toFixed(2)}
+</p>
+
               </div>
               <button
                 className="delete-btn"
