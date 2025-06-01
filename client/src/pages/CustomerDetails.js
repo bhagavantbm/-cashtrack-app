@@ -310,10 +310,7 @@ const handleDownloadPDF = () => {
 
   // --- SAVE FILE ---
   doc.save(`${customer.name}_transactions.pdf`);
-};
-
-
-  
+};   
 
 
  const handleShare = () => {
